@@ -1,4 +1,6 @@
-import { CompanyCard } from './CompanyCard';
+import React from 'react';
+import CompanyCard from './CompanyCard';
+// import './Companies.css';
 
 function Companies({ companies }) {
 	return (
