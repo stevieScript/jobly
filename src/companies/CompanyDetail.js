@@ -1,7 +1,7 @@
-import { Card } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import {Card} from 'reactstrap';
+import {Link} from 'react-router-dom';
 
-function CompanyCard({ company }) {
+function CompanyCard({company}) {
 	return (
 		<Card className='CompanyCard'>
 			<Link to={`/companies/${company.handle}`}>

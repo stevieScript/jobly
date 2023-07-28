@@ -1,11 +1,13 @@
-import { Form, Label, Input } from 'reactstrap';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import JoblyApi from '../api';
+import {Form, Label, Input, Button} from 'reactstrap';
+import {useState, useContext} from 'react';
+import UserContext from '../auth/UserContext';
+import {useNavigate} from 'react-router-dom';
+// import JoblyApi from '../api';
 // import './Signup.css';
 
 function Signup() {
-	const history = useNavigate();
+	const navigate = useNavigate();
+	const {handleSignup} = useContext(UserContext);
 	const [formData, setFormData] = useState({
 		username: '',
 		password: '',
@@ -13,62 +15,88 @@ function Signup() {
 		lastName: '',
 		email: '',
 	});
+	const [formErrors, setFormErrors] = useState([]);
 
-	const handleChange = (e) => {
-		const { name, value } = e.target;
+	const handleSubmit = async (evt) => {
+		evt.preventDefault();
+		let result = await handleSignup(formData);
+		if (result.success) {
+			navigate('/companies');
+		} else {
+			setFormErrors(result.errors);
+		}
+	};
+
+	const handleChange = (evt) => {
+		const {name, value} = evt.target;
 		setFormData((formData) => ({
 			...formData,
 			[name]: value,
 		}));
 	};
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		let token = JoblyApi.signup(formData);
-		if (token) {
-			localStorage.setItem('token', token);
-			history.push('/companies');
-		}
-		handleChange(e, formData);
-	};
-
 	return (
-		<div className='signup'>
-			<h1>Signup</h1>
-			<Form handleSubmit={handleSubmit}>
-				<Label htmlFor='username'>Username</Label>
+		<div className='Signup'>
+			<Form onSubmit={handleSubmit}>
+				<Label for='username'>Username</Label>
 				<Input
 					type='text'
 					name='username'
 					id='username'
+					placeholder='Username'
+					value={formData.username}
+					onChange={handleChange}
 				/>
-				<Label htmlFor='password'>Password</Label>
+				<Label for='password'>Password</Label>
 				<Input
 					type='password'
 					name='password'
 					id='password'
+					placeholder='Password'
+					value={formData.password}
+					onChange={handleChange}
 				/>
-				<Label htmlFor='firstName'>First Name</Label>
+				<Label for='firstName'>First Name</Label>
 				<Input
 					type='text'
 					name='firstName'
 					id='firstName'
+					placeholder='First Name'
+					value={formData.firstName}
+					onChange={handleChange}
 				/>
-				<Label htmlFor='lastName'>Last Name</Label>
+				<Label for='lastName'>Last Name</Label>
 				<Input
 					type='text'
 					name='lastName'
 					id='lastName'
+					placeholder='Last Name'
+					value={formData.lastName}
+					onChange={handleChange}
 				/>
-				<Label htmlFor='email'>Email</Label>
+				<Label for='email'>Email</Label>
 				<Input
 					type='email'
 					name='email'
 					id='email'
+					placeholder='Email'
+					value={formData.email}
+					onChange={handleChange}
 				/>
+				{formErrors.length ? (
+					<div className='alert alert-danger'>
+						{formErrors.map((error) => (
+							<p className='mb-0 small' key={error}>
+								{error}
+							</p>
+						))}
+					</div>
+				) : null}
+				<Button>Submit</Button>
 			</Form>
 		</div>
 	);
 }
 
 export default Signup;
+

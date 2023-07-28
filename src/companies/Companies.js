@@ -1,8 +1,8 @@
 import React from 'react';
-import CompanyCard from './CompanyCard';
+import CompanyCard from './CompanyDetail';
 // import './Companies.css';
 
-function Companies({ companies }) {
+function Companies({companies}) {
 	return (
 		<div className='Companies'>
 			{companies.map((company) => (
