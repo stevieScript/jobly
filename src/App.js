@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext} from 'react';
+import {useState, useEffect} from 'react';
 import AppRoutes from './AppRoutes';
 import Navbar from './components/NavBar';
 import {BrowserRouter} from 'react-router-dom';
@@ -9,7 +9,7 @@ import './App.css';
 
 function App() {
 	const [currentUser, setCurrentUser] = useState(null);
-	const [token, setToken] = useState(null);
+	const [token, setToken] = useState(() => localStorage.getItem('token') || null);
 	const [infoLoaded, setInfoLoaded] = useState(false);
 	const [applicationIds, setApplicationIds] = useState(new Set([]));
 
@@ -30,13 +30,14 @@ function App() {
 			setInfoLoaded(true);
 		}
 		setInfoLoaded(false);
-		getCurrentUser();
+		getCurrentUser(token);
 	}, [token]);
 
 	const handleLogin = async (loginData) => {
 		try {
 			let token = await JoblyApi.login(loginData);
-			setToken(token.token);
+			// localStorage.setItem('token', token);
+			setToken(token);
 			return {success: true};
 		} catch (errors) {
 			console.error('login failed', errors);
@@ -58,6 +59,7 @@ function App() {
 	const handleLogout = () => {
 		setCurrentUser(null);
 		setToken(null);
+		localStorage.removeItem('token');
 	};
 
 	const handleUpdateProfile = async (username, profileData) => {

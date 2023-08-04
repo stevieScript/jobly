@@ -1,17 +1,20 @@
-import {Form, Label, Button, Alert} from 'react-bootstrap';
+import {Form, Label, Button, Alert, Input} from 'reactstrap';
 import {useContext, useState} from 'react';
 import UserContext from '../auth/UserContext';
 import JoblyApi from '../api';
-import {useHistory} from 'react-router-dom';
+import {useNavigate, Navigate} from 'react-router-dom';
+// import {use} from '../../backend/routes/users';
 
 function Profile() {
 	const {currentUser, setCurrentUser} = useContext(UserContext);
-	const history = useHistory();
+	const navigate = useNavigate();
+	const userDetails = currentUser;
+
 	const [formData, setFormData] = useState({
-		username: currentUser.username,
-		firstName: currentUser.firstName,
-		lastName: currentUser.lastName,
-		email: currentUser.email,
+		username: userDetails.username,
+		firstName: userDetails.firstName,
+		lastName: userDetails.lastName,
+		email: userDetails.email,
 		password: '',
 	});
 	const [formErrors, setFormErrors] = useState([]);
@@ -35,58 +38,41 @@ function Profile() {
 			};
 			let username = formData.username;
 			let updatedUser = await JoblyApi.updateUser(username, profileData);
+			setFormData((formData) => ({
+				...formData,
+				password: '',
+			}));
+
 			setCurrentUser(updatedUser);
-			history.push('/companies');
+			navigate('/companies');
 		} catch (errors) {
 			setFormErrors(errors);
 		}
 	};
+	if (!currentUser) {
+		return <Navigate to='/' />;
+	}
 
 	return (
 		<div className='Profile'>
 			<h2>Profile</h2>
 			<Form onSubmit={handleSubmit}>
-				<Form.Group>
-					<Label>Username</Label>
-					<Form.Control
-						type='text'
-						name='username'
-						value={formData.username}
-						onChange={handleChange}
-						disabled={true}
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Label>First Name</Label>
-					<Form.Control
-						type='text'
-						name='firstName'
-						value={formData.firstName}
-						onChange={handleChange}
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Label>Last Name</Label>
-					<Form.Control
-						type='text'
-						name='lastName'
-						value={formData.lastName}
-						onChange={handleChange}
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Label>Email</Label>
-					<Form.Control type='email' name='email' value={formData.email} onChange={handleChange} />
-				</Form.Group>
-				<Form.Group>
-					<Label>Confirm password to make changes:</Label>
-					<Form.Control
-						type='password'
-						name='password'
-						value={formData.password}
-						onChange={handleChange}
-					/>
-				</Form.Group>
+				<Label>Username</Label>
+				<Input
+					type='text'
+					name='username'
+					value={formData.username}
+					onChange={handleChange}
+					disabled={true}
+				/>
+				<Label>First Name</Label>
+				<Input type='text' name='firstName' value={formData.firstName} onChange={handleChange} />
+				<Label>Last Name</Label>
+				<Input type='text' name='lastName' value={formData.lastName} onChange={handleChange} />
+				<Label>Email</Label>
+				<Input type='email' name='email' value={formData.email} onChange={handleChange} />
+				<Label>Confirm password to make changes:</Label>
+				<Input type='password' name='password' value={formData.password} onChange={handleChange} />
 				{formErrors.length ? (
 					<Alert variant='danger'>
 						<Alert.Heading>Oops!</Alert.Heading>
@@ -97,7 +83,7 @@ function Profile() {
 						</ul>
 					</Alert>
 				) : null}
-				<Button variant='primary' type='submit'>
+				<Button className='primary' type='submit'>
 					Save Changes
 				</Button>
 			</Form>
