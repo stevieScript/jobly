@@ -3,7 +3,6 @@ import {useContext, useState} from 'react';
 import UserContext from '../auth/UserContext';
 import JoblyApi from '../api';
 import {useNavigate, Navigate} from 'react-router-dom';
-// import {use} from '../../backend/routes/users';
 
 function Profile() {
 	const {currentUser, setCurrentUser} = useContext(UserContext);
@@ -83,7 +82,7 @@ function Profile() {
 						</ul>
 					</Alert>
 				) : null}
-				<Button className='primary' type='submit'>
+				<Button color='primary' type='submit'>
 					Save Changes
 				</Button>
 			</Form>

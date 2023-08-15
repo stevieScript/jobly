@@ -92,7 +92,7 @@ function Signup() {
 						))}
 					</div>
 				) : null}
-				<Button>Submit</Button>
+				<Button color='primary'>Submit</Button>
 			</Form>
 		</div>
 	);

@@ -8,10 +8,10 @@ import jwt from 'jsonwebtoken';
 import './App.css';
 
 function App() {
-	const [currentUser, setCurrentUser] = useState(null);
-	const [token, setToken] = useState(() => localStorage.getItem('token') || null);
 	const [infoLoaded, setInfoLoaded] = useState(false);
+	const [currentUser, setCurrentUser] = useState(null);
 	const [applicationIds, setApplicationIds] = useState(new Set([]));
+	const [token, setToken] = useState(() => localStorage.getItem('token') || null);
 
 	useEffect(() => {
 		async function getCurrentUser() {
@@ -36,7 +36,6 @@ function App() {
 	const handleLogin = async (loginData) => {
 		try {
 			let token = await JoblyApi.login(loginData);
-			// localStorage.setItem('token', token);
 			setToken(token);
 			return {success: true};
 		} catch (errors) {
@@ -102,11 +101,11 @@ function App() {
 						handleApply,
 						handleLogin,
 						handleSignup,
-						handleLogout,
+						// handleLogout,
 						handleUpdateProfile,
 					}}>
-					<Navbar />
-					<AppRoutes />
+					<Navbar handleLogout={handleLogout} />
+					<AppRoutes login={handleLogin} logout={handleLogout} />
 				</UserContext.Provider>
 			</BrowserRouter>
 		</div>

@@ -12,8 +12,12 @@ function Home() {
 		<div className='Home'>
 			<h1>Jobly</h1>
 			<p>All the jobs in one, convenient place.</p>
-			<Button href='/login'>Login</Button>
-			<Button href='/signup'>Sign Up</Button>
+			<Button color='primary' href='/login'>
+				Login
+			</Button>{' '}
+			<Button color='primary' href='/signup'>
+				Sign Up
+			</Button>
 		</div>
 	);
 }
