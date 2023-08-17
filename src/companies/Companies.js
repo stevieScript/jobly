@@ -1,12 +1,20 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Navigate} from 'react-router-dom';
 import CompanyCard from './CompanyDetail';
+import JoblyApi from '../api';
 import UserContext from '../auth/UserContext';
-// import JoblyApi from '../api';
-// import './Companies.css';
 
-function Companies({companies}) {
+function Companies() {
 	const {currentUser} = React.useContext(UserContext);
+	const [companies, setCompanies] = useState([]);
+
+	useEffect(() => {
+		const getCompanies = async () => {
+			const companies = await JoblyApi.getAllCompanies();
+			setCompanies(companies);
+		};
+		getCompanies();
+	}, []);
 
 	if (!currentUser) {
 		return <Navigate to='/' />;

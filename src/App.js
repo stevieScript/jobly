@@ -101,7 +101,6 @@ function App() {
 						handleApply,
 						handleLogin,
 						handleSignup,
-						// handleLogout,
 						handleUpdateProfile,
 					}}>
 					<Navbar handleLogout={handleLogout} />

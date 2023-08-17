@@ -7,11 +7,21 @@ import Jobs from '../jobs/Jobs';
 import JoblyApi from '../api';
 import {useContext, useState, useEffect} from 'react';
 
-function Company({jobs}) {
-	const {currentUser, hasAppliedToJob} = useContext(UserContext);
+function Company() {
+	const {currentUser} = useContext(UserContext);
 	const {handle} = useParams();
 	const [company, setCompany] = useState(null);
 	const [loading, setLoading] = useState(true);
+
+	const [jobs, setJobs] = useState([]);
+
+	useEffect(() => {
+		const getJobs = async () => {
+			const jobs = await JoblyApi.getJobs();
+			setJobs(jobs);
+		};
+		getJobs();
+	}, []);
 
 	useEffect(() => {
 		async function getCompany() {

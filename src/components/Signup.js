@@ -1,13 +1,9 @@
 import {Form, Label, Input, Button} from 'reactstrap';
-import {useState, useContext} from 'react';
-import UserContext from '../auth/UserContext';
+import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-// import JoblyApi from '../api';
-// import './Signup.css';
 
-function Signup() {
+function Signup({handleSignup}) {
 	const navigate = useNavigate();
-	const {handleSignup} = useContext(UserContext);
 	const [formData, setFormData] = useState({
 		username: '',
 		password: '',
