@@ -1,10 +1,10 @@
 import {useState, useContext, useEffect} from 'react';
-import JobDetail from './JobDetail';
+import JobCardList from './JobCardList';
 import JoblyApi from '../api';
 import SearchForm from '../SearchForm';
 import UserContext from '../auth/UserContext';
 import {Navigate} from 'react-router-dom';
-function Jobs() {
+function JobList() {
 	const {currentUser} = useContext(UserContext);
 
 	const [jobs, setJobs] = useState([]);
@@ -27,15 +27,16 @@ function Jobs() {
 	}
 
 	return (
-		<div className='Jobs'>
+		<div className='JobList col-md-8 offset-md-2'>
 			<SearchForm search={search} />
-			{jobs.length === 0 && <h3>No results found</h3>}
-			{jobs.map((job) => (
-				<JobDetail key={job.id} job={job} />
-			))}
+			{jobs.length ? (
+				<JobCardList jobs={jobs} />
+			) : (
+				<p className='lead'>Sorry, no results were found!</p>
+			)}
 		</div>
 	);
 }
 
-export default Jobs;
+export default JobList;
 

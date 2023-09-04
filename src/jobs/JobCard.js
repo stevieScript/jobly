@@ -1,13 +1,11 @@
-import {Card, Button} from 'reactstrap';
-import {Link} from 'react-router-dom';
 import {Navigate} from 'react-router-dom';
 import UserContext from '../auth/UserContext';
 import {useParams} from 'react-router-dom';
-import Jobs from '../jobs/Jobs';
 import JoblyApi from '../api';
 import {useContext, useState, useEffect} from 'react';
+import './JobCard.css';
 
-function JobDetail({job}) {
+function JobCard({job}) {
 	const {currentUser, hasAppliedToJob, handleApply} = useContext(UserContext);
 	const {handle} = useParams();
 	const [company, setCompany] = useState(null);
@@ -39,33 +37,34 @@ function JobDetail({job}) {
 	}
 
 	return (
-		<div className='JobDetail col-md-8 offset-md-2'>
-			<Card className='JobCard'>
-				<div className='card-body'>
-					<h6 className='card-title d-flex justify-content-between'>
-						<span className='text-capitalize'>{job.title}</span>
-						<span>
-							{hasAppliedToJob(job.id) ? (
-								<Button color='danger' disabled>
-									Applied
-								</Button>
-							) : (
-								<Button
-									className='btn btn-danger font-weight-bold'
-									onClick={() => handleApply(job.id)}>
-									Apply
-								</Button>
-							)}
-						</span>
-					</h6>
-					<p>{job.salary}</p>
-					<p>{job.equity}</p>
-					<p>{job.companyHandle}</p>
-				</div>
-			</Card>
+		<div className='JobDetail card'>
+			<div className='card-body'>
+				<h6 className='card-title'>{job.title}</h6>
+				<p className='text-capitalize'>{job.companyHandle}</p>
+				<p>{job.salary && formatSalary(job.salary)}</p>
+				<p>Equity: {job.equity}</p>
+				<button
+					className='btn btn-danger font-weight-bold text-uppercase float-right'
+					onClick={() => handleApply(job.id)}
+					disabled={hasAppliedToJob(job.id)}>
+					{hasAppliedToJob(job.id) ? 'Applied' : 'Apply'}
+				</button>
+			</div>
 		</div>
 	);
 }
 
-export default JobDetail;
+function formatSalary(salary) {
+	const digitsRev = [];
+	const salaryStr = salary.toString();
+
+	for (let i = salaryStr.length - 1; i >= 0; i--) {
+		digitsRev.push(salaryStr[i]);
+		if (i > 0 && i % 3 === 0) digitsRev.push(',');
+	}
+
+	return `Salary: ${digitsRev.reverse().join('')}`;
+}
+
+export default JobCard;
 

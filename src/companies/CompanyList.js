@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Navigate} from 'react-router-dom';
-import CompanyCard from './CompanyDetail';
+import CompanyCard from './CompanyCard';
 import JoblyApi from '../api';
 import SearchForm from '../SearchForm';
 import UserContext from '../auth/UserContext';
+// import './Company.css';
 
-function Companies() {
+function CompanyList() {
 	const {currentUser} = React.useContext(UserContext);
 	const [companies, setCompanies] = useState([]);
 
@@ -27,15 +28,20 @@ function Companies() {
 	};
 
 	return (
-		<div className='Companies'>
+		<div className='CompanyList col-md-8 offset-md-2'>
 			<SearchForm search={search} />
-			{companies.length === 0 && <h3>No results found</h3>}
-			{companies.map((company) => (
-				<CompanyCard key={company.handle} company={company} />
-			))}
+			{companies.length ? (
+				<div className='CompanyList-list'>
+					{companies.map((company) => (
+						<CompanyCard key={company.handle} company={company} />
+					))}
+				</div>
+			) : (
+				<p className='lead'>Sorry, no results were found!</p>
+			)}
 		</div>
 	);
 }
 
-export default Companies;
+export default CompanyList;
 

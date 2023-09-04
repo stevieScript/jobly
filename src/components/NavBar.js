@@ -2,6 +2,7 @@ import {NavLink} from 'react-router-dom';
 import {Nav, Navbar, NavItem, NavbarBrand} from 'reactstrap';
 import {useContext} from 'react';
 import UserContext from '../auth/UserContext';
+import './Nav.css';
 
 function NavBar({handleLogout}) {
 	const {currentUser} = useContext(UserContext);
@@ -51,12 +52,10 @@ function NavBar({handleLogout}) {
 	}
 
 	return (
-		<div>
-			<Navbar color='light' light expand='md'>
-				<NavbarBrand href='/'>Jobly</NavbarBrand>
-				{currentUser ? loggedInNav() : loggedOutNav()}
-			</Navbar>
-		</div>
+		<Navbar className='Navigation' color='light' light expand='md'>
+			<NavbarBrand href='/'>Jobly</NavbarBrand>
+			{currentUser ? loggedInNav() : loggedOutNav()}
+		</Navbar>
 	);
 }
 
