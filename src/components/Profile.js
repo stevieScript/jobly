@@ -54,38 +54,45 @@ function Profile() {
 
 	return (
 		<div className='Profile'>
-			<h2>Profile</h2>
-			<Form onSubmit={handleSubmit}>
-				<Label>Username</Label>
-				<Input
-					type='text'
-					name='username'
-					value={formData.username}
-					onChange={handleChange}
-					disabled={true}
-				/>
-				<Label>First Name</Label>
-				<Input type='text' name='firstName' value={formData.firstName} onChange={handleChange} />
-				<Label>Last Name</Label>
-				<Input type='text' name='lastName' value={formData.lastName} onChange={handleChange} />
-				<Label>Email</Label>
-				<Input type='email' name='email' value={formData.email} onChange={handleChange} />
-				<Label>Confirm password to make changes:</Label>
-				<Input type='password' name='password' value={formData.password} onChange={handleChange} />
-				{formErrors.length ? (
-					<Alert variant='danger'>
-						<Alert.Heading>Oops!</Alert.Heading>
-						<ul>
-							{formErrors.map((error) => (
-								<li key={error}>{error}</li>
-							))}
-						</ul>
-					</Alert>
-				) : null}
-				<Button color='primary' type='submit'>
-					Save Changes
-				</Button>
-			</Form>
+			<div className='container col-md-8 offset-md-4 col-lg-6 offset-lg-3'>
+				<h2>Profile</h2>
+				<Form onSubmit={handleSubmit}>
+					<Label>Username</Label>
+					<Input
+						type='text'
+						name='username'
+						value={formData.username}
+						onChange={handleChange}
+						disabled={true}
+					/>
+					<Label>First Name</Label>
+					<Input type='text' name='firstName' value={formData.firstName} onChange={handleChange} />
+					<Label>Last Name</Label>
+					<Input type='text' name='lastName' value={formData.lastName} onChange={handleChange} />
+					<Label>Email</Label>
+					<Input type='email' name='email' value={formData.email} onChange={handleChange} />
+					<Label>Confirm password to make changes:</Label>
+					<Input
+						type='password'
+						name='password'
+						value={formData.password}
+						onChange={handleChange}
+					/>
+					{formErrors.length ? (
+						<Alert variant='danger'>
+							<Alert.Heading>Oops!</Alert.Heading>
+							<ul>
+								{formErrors.map((error) => (
+									<li key={error}>{error}</li>
+								))}
+							</ul>
+						</Alert>
+					) : null}
+					<Button color='primary' type='submit'>
+						Save Changes
+					</Button>
+				</Form>
+			</div>
 		</div>
 	);
 }
